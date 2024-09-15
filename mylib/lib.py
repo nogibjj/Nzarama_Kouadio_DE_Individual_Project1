@@ -51,12 +51,13 @@ def grab_max(content_df, col):
 def histogram_revenue_growth_distribution(content_df, col_selected):
 
     plt.figure(figsize=(8, 6))
-    plt.hist(content_df[7], bins=10, edgecolor="black")
+    plt.hist(content_df.iloc[:, 7], bins=10, edgecolor="black")
     plt.title("Revenue Growth Distribution")
     plt.xlabel("Revenue Growth (%)")
     plt.ylabel("Number of Companies")
     plt.grid(True)
     plt.show()
+    # Save the plot if col_selected is not provided, otherwise show it
     if not col_selected:
         plt.savefig("market_cap_distribution.png")
     else:
