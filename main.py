@@ -3,6 +3,7 @@ Main cli or app entry point
 """
 
 from mylib.lib import *
+import pandas as pd
 
 
 def general_describe(dataset):
@@ -42,4 +43,4 @@ def save_to_markdown(dataset):
 
 
 if __name__ == "__main__":
-    save_to_markdown()
+    save_to_markdown(dataset)
