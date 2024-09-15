@@ -3,7 +3,6 @@ Main cli or app entry point
 """
 
 from mylib.lib import *
-import pandas as pd
 
 
 def general_describe(dataset):
