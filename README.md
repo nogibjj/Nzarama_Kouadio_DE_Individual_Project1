@@ -1,4 +1,4 @@
-[![CI](https://github.com/nogibjj/python-ruff-template/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/python-ruff-template/actions/workflows/cicd.yml)
+[![CI](https://github.com/nogibjj/Nzarama_Kouadio_DE_Individual_Project1/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/Nzarama_Kouadio_DE_Individual_Project1/actions/workflows/cicd.yml)
 ## Individual Project 1: Continuous Integration Using Gitlab Actions of Python Data Science Project
 
 ## Structure 
