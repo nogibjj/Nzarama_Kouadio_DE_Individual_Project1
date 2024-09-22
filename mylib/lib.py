@@ -7,12 +7,16 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Loading the data
-dataset = "https://storage.googleapis.com/kagglesdsdata/datasets/1807380/9388199/sp500_companies.csv?X-Goog-Algorithm=GOOG4-RSA-SHA256&X-Goog-Credential=gcp-kaggle-com%40kaggle-161607.iam.gserviceaccount.com%2F20240914%2Fauto%2Fstorage%2Fgoog4_request&X-Goog-Date=20240914T215251Z&X-Goog-Expires=259200&X-Goog-SignedHeaders=host&X-Goog-Signature=3c91ebd790ab9b28b15e5b1be3d8086b8e990455b209d35ea283cd1ab367ca41374bcbd958b7fdec23c62c2915a714733f120df28df968675f985924f47cc1b8a22a7b5272f3a7ee31fd938b008ce905aa2b9241e100f63b2cc8cd816cbe80d89486c7b2cb3944289b634e98acea77aa7c0d799278dc5ba3356c1bf6b2f8396fc9611c3c923b30cedbc0607ac8bcacc92413b41e943ba5c47381611998e7df485f435e5f44a03b7c9af85f014201d4c93ded1917d33accc0359ed44c804e93c56f4e72ef8c8c850819cec6a4ed8b7ad9572ae27bfb333eb6c8ba4543bc29a070b04aecca8440fd1d53993e041c4d7a89f09ab2c3ba986f09b1aa02e20a9a1321"
+dataset = "dataset/police_killings.csv"
 
 
 def load_dataset(dataset):
     """loads the dataset"""
-    content_df = pd.read_csv(dataset)
+    content_df = pd.read_csv(dataset, encoding="ISO-8859-1")
+    # Clean the age column by removing unknown references
+    content_df["age"] = pd.to_numeric(
+        content_df["age"].replace("Unknown", pd.NA), errors="coerce"
+    )
     return content_df
 
 
@@ -47,18 +51,58 @@ def grab_max(content_df, col):
     return col_max
 
 
-# Data Visualization: Market Cap Distribution Histogram
-def histogram_revenue_growth_distribution(content_df, col_selected):
+# Data Visualization: Distribution of police killings by age
+def age_histogram(content_df, show_plot):
 
-    plt.figure(figsize=(8, 6))
-    plt.hist(content_df.iloc[:, 7], bins=10, edgecolor="black")
-    plt.title("Revenue Growth Distribution")
-    plt.xlabel("Revenue Growth (%)")
-    plt.ylabel("Number of Companies")
+    # Create generational categories based on age
+    bins = [0, 12, 28, 44, 60, 79, 100]  # Age gropu by generations
+    labels = [
+        "Gen Alpha",
+        "Gen Z",
+        "Millenials",
+        "Gen X",
+        "Baby Boomers",
+        "Silent Generation",
+    ]
+    content_df["generation"] = pd.cut(
+        content_df["age"], bins=bins, labels=labels, right=False
+    )
+    # Plot the count of killings per generation
+
+    plt.figure(figsize=(10, 6))
+    content_df["generation"].value_counts(sort=False).plot(
+        kind="bar", edgecolor="black"
+    )
+    plt.title("Distribution of Police Killings by Generation")
+    plt.xlabel("Generation")
+    plt.ylabel("Number of People Killed")
     plt.grid(True)
-    plt.show()
-    # Save the plot if col_selected is not provided, otherwise show it
-    if not col_selected:
-        plt.savefig("market_cap_distribution.png")
-    else:
+
+    # Save the plot and dispaly it if a column is selected
+    plt.savefig("killings_per_age.png")
+
+    if show_plot:
+        plt.show()
+
+
+# Data Visualization: Distribution of police killings across gender and race
+def gender_pie_chart(content_df, show_plot=True):
+    gender_counts = content_df["gender"].value_counts()
+    plt.figure(figsize=(8, 8))
+    plt.pie(
+        gender_counts,
+        labels=gender_counts.index,
+        autopct="%1.1f%%",
+        startangle=90,
+        colors=["blue", "pink"],
+        wedgeprops={"edgecolor": "black"},
+    )
+    plt.title("Police Killings by Gender (in percent %)")
+    plt.xlabel("Gender")
+    plt.grid(True)
+
+    # Save the plot and dispaly it if a column is selected
+    plt.savefig("killings_by_gender.png")
+
+    if show_plot:
         plt.show()
