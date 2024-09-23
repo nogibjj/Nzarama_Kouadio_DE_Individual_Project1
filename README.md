@@ -47,3 +47,6 @@ This project analyzes the data on police killings in the United States. It uses 
 1. Clone the repository using git clone 
 2. Install the required packages through -r requirements.txt
 3. Run the main.py script or the main.pipynb script to generate the report
+
+## Video
+The demo video linked below will explain how the project works. Click on the link or copy and paste to a browser: https://youtu.be/6PR0x8i2_j0
